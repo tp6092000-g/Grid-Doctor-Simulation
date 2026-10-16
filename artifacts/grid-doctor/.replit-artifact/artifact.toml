@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "GRID DOCTOR"
+description = "A browser-based educational renewable energy crisis simulator. Explore how changing solar, wind, demand, battery, and electrolyser settings affects electricity reliability and hydrogen production over a reproducible 24-hour day."
+version = "1.0.0"
+id = "artifacts/grid-doctor"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22118
+
+[services.development]
+run = "pnpm --filter @workspace/grid-doctor run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/grid-doctor", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/grid-doctor/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22118"
+BASE_PATH = "/"
